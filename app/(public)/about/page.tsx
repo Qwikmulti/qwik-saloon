@@ -1,215 +1,115 @@
+'use client';
+
 import { motion } from 'framer-motion';
-import { Card } from '@/components/ui';
-import { Scissors, Award, Heart, Sparkles, Users, Clock, MapPin, Phone, Mail, Shield, Leaf } from 'lucide-react';
-
-function ValueCard({ icon: Icon, title, description }: { icon: any; title: string; description: string }) {
-  return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      className="group relative overflow-hidden rounded-2xl border border-white/5 bg-[#131316] p-8 transition-all duration-500 hover:border-violet-500/30"
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-600/5 to-fuchsia-600/5 opacity-0 transition-opacity group-hover:opacity-100" />
-      <div className="relative">
-        <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-600 shadow-lg shadow-violet-500/25">
-          <Icon className="h-7 w-7 text-white" />
-        </div>
-        <h3 className="mb-3 font-display text-xl font-semibold">{title}</h3>
-        <p className="leading-relaxed text-zinc-400">{description}</p>
-      </div>
-    </motion.div>
-  );
-}
-
-function TeamMemberCard({ name, role, bio }: { name: string; role: string; bio: string }) {
-  return (
-    <Card className="group relative overflow-hidden rounded-2xl border border-white/5 bg-[#131316] p-6 transition-all duration-500 hover:border-violet-500/30">
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-600/10 to-fuchsia-600/10 opacity-0 transition-opacity group-hover:opacity-100" />
-      <div className="relative">
-        <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-600 text-3xl font-bold">
-          {name.charAt(0)}
-        </div>
-        <h3 className="mb-1 font-display text-lg font-semibold">{name}</h3>
-        <p className="mb-3 text-sm font-medium text-violet-400">{role}</p>
-        <p className="line-clamp-3 text-sm leading-relaxed text-zinc-400">{bio}</p>
-      </div>
-    </Card>
-  );
-}
+import { Scissors, Award, Heart, Sparkles, Users, Clock, Leaf, Globe } from 'lucide-react';
+import { BentoGrid, BentoBox } from '@/components/ui';
 
 export default function AboutPage() {
   const values = [
-    { icon: Shield, title: 'Quality First', description: 'We never compromise on quality. Every service, every time. Our stylists use only premium products and the latest techniques.' },
-    { icon: Heart, title: 'Client Focused', description: 'Your satisfaction is our priority. We listen carefully and deliver results that exceed expectations.' },
-    { icon: Users, title: 'Inclusive', description: 'We celebrate diversity and welcome everyone. Our services are tailored to all hair types, textures, and styles.' },
-    { icon: Leaf, title: 'Sustainable', description: 'Committed to environmentally responsible practices. We use eco-friendly products and minimise waste.' },
+    { icon: Award, title: 'Uncompromising Quality', description: 'Premium products and precise techniques.' },
+    { icon: Heart, title: 'Deep Care', description: 'Every client is treated as our most important guest.' },
+    { icon: Globe, title: 'Inclusivity', description: 'Mastery over all hair textures and styles.' },
+    { icon: Leaf, title: 'Sustainability', description: 'Eco-conscious practices and zero waste initiatives.' },
   ];
 
   const team = [
-    { name: 'Alexandra Chen', role: 'Creative Director', bio: '15 years of experience in colour artistry and precision cutting. Trained at Vidal Sassoon Academy.' },
-    { name: 'Marcus Thompson', role: 'Senior Stylist', bio: 'Specialist in textured hair and protective styling. Known for transformative makeovers.' },
-    { name: 'Sofia Rodriguez', role: 'Colour Specialist', bio: 'Balayage and colour expert trained in Paris and Milan. Creating lived-in, effortless looks.' },
-    { name: 'James Park', role: 'Men\'s Grooming', bio: 'Contemporary men\'s grooming specialist. Precision cuts with modern finishing techniques.' },
+    { name: 'Alexandra Chen', role: 'Creative Director', img: 'AC' },
+    { name: 'Marcus Thompson', role: 'Senior Stylist', img: 'MT' },
+    { name: 'Sofia Rodriguez', role: 'Colour Specialist', img: 'SR' },
+    { name: 'James Park', role: 'Men\'s Grooming', img: 'JP' },
   ];
 
   return (
-    <div className="min-h-screen py-32">
-      <div className="container mx-auto px-6">
+    <div className="min-h-screen py-32 bg-[#050507]">
+      <div className="container mx-auto px-6 max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-24 text-center"
+          className="mb-24 text-center max-w-3xl mx-auto"
         >
-          <span className="mb-4 inline-block text-sm font-medium uppercase tracking-wider text-violet-400">
-            Our Story
+          <span className="mb-6 inline-block text-sm font-semibold uppercase tracking-[0.2em] text-violet-400">
+            Our Story & Philosophy
           </span>
-          <h1 className="font-display text-4xl font-bold sm:text-5xl lg:text-6xl">
-            About Qwik Salon
+          <h1 className="font-display text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+            Redefining the <br/><span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">salon experience.</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-3xl text-xl leading-relaxed text-zinc-400">
-            Where style meets artistry. We believe everyone deserves to look and feel their best,
-            which is why we&apos;ve created a space where premium services meet approachable expertise.
+          <p className="mt-8 text-xl leading-relaxed text-zinc-400">
+            Qwik Saloon is a sanctuary where artistry meets precision. Founded on the belief that premium beauty should be frictionless, we integrate advanced booking technology with world-class aesthetics carefully designed for your comfort.
           </p>
         </motion.div>
 
-        <div className="mb-24 grid gap-8 lg:grid-cols-2">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="relative overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-br from-violet-600/20 to-fuchsia-600/20 p-12 lg:p-16"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-violet-600/10 to-fuchsia-600/10" />
-            <div className="relative">
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
-                <Scissors className="h-8 w-8" />
-              </div>
-              <h2 className="mb-4 font-display text-2xl font-bold">Our Story</h2>
-              <div className="space-y-4 text-zinc-300">
-                <p>
-                  Founded in 2020, Qwik Salon was born from a simple belief: premium hair
-                  and beauty services should be accessible to everyone.
-                </p>
-                <p>
-                  What started as a vision for seamless booking has grown into a beloved destination
-                  where clients across the UK discover their best selves.
-                </p>
-                <p>
-                  Today, we&apos;re proud to be a unisex salon that celebrates diversity, champions
-                  sustainability, and delivers exceptional results every visit.
-                </p>
-              </div>
-            </div>
-          </motion.div>
+        {/* Our Story Timeline via Bento Grid */}
+        <BentoGrid columns={3} className="mb-32">
+          <BentoBox colSpan={2} className="min-h-[300px] flex flex-col justify-center bg-gradient-to-br from-violet-900/20 to-[#050507]">
+             <h2 className="font-display text-3xl font-bold mb-4">Born from Frustration, Built for Luxury</h2>
+             <p className="text-zinc-400 text-lg leading-relaxed max-w-2xl">
+                We noticed an industry stuck in the past—hidden wait times, obscure pricing, and rushed services. In 2026, Qwik Salon emerged as the antithesis. A fully transparent, luxuriously accommodating space where your time is respected as much as your style.
+             </p>
+          </BentoBox>
+          <BentoBox colSpan={1} className="bg-gradient-to-tl from-zinc-900/50 flex flex-col items-center justify-center text-center">
+             <div className="h-20 w-20 rounded-full border border-violet-500/30 bg-violet-500/10 flex items-center justify-center mb-6">
+                <span className="font-display text-2xl font-bold text-violet-400">01</span>
+             </div>
+             <h3 className="font-display text-xl font-bold">Inception</h3>
+             <p className="text-zinc-500 mt-2">Founded in London to elevate grooming standards.</p>
+          </BentoBox>
+          <BentoBox colSpan={1} className="bg-gradient-to-tl from-zinc-900/50 flex flex-col items-center justify-center text-center">
+             <div className="h-20 w-20 rounded-full border border-fuchsia-500/30 bg-fuchsia-500/10 flex items-center justify-center mb-6">
+                <span className="font-display text-2xl font-bold text-fuchsia-400">02</span>
+             </div>
+             <h3 className="font-display text-xl font-bold">Expansion</h3>
+             <p className="text-zinc-500 mt-2">Integrating tech for zero-wait appointments.</p>
+          </BentoBox>
+          <BentoBox colSpan={2} className="min-h-[300px] flex flex-col justify-center bg-gradient-to-bl from-emerald-900/20 to-[#050507]">
+             <h2 className="font-display text-3xl font-bold mb-4">Sustainability at our Core</h2>
+             <p className="text-zinc-400 text-lg leading-relaxed max-w-2xl">
+                Beyond beauty, we care for the planet. We operate a 95% zero-waste model, ethically sourcing clean, vegan products, and using 100% renewable energy across our locations.
+             </p>
+          </BentoBox>
+        </BentoGrid>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="relative overflow-hidden rounded-3xl border border-white/5 bg-[#131316] p-12 lg:p-16"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-violet-600/5 to-fuchsia-600/5" />
-            <div className="relative">
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
-                <Award className="h-8 w-8 text-violet-400" />
-              </div>
-              <h2 className="mb-4 font-display text-2xl font-bold">Our Standards</h2>
-              <div className="space-y-4 text-zinc-300">
-                <p>
-                  Our team of trained professionals uses only the highest quality products
-                  from trusted brands like Olaplex, Wella, and Schwarzkopf.
-                </p>
-                <p>
-                  We continuously invest in training, attending international seminars and staying
-                  ahead of the latest trends and techniques.
-                </p>
-                <p>
-                  Every service is backed by our satisfaction guarantee because your happiness is our
-                  ultimate measure of success.
-                </p>
-              </div>
-            </div>
-          </motion.div>
+        {/* Values */}
+        <div className="mb-32">
+           <h2 className="font-display text-4xl font-bold mb-12 text-center">Our Core Values</h2>
+           <BentoGrid columns={4}>
+              {values.map((v, i) => (
+                 <BentoBox key={i} colSpan={1} className="text-center flex flex-col items-center">
+                    <div className="h-16 w-16 rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center mb-6 text-violet-400">
+                       <v.icon className="h-8 w-8" />
+                    </div>
+                    <h3 className="font-display text-xl font-bold mb-3">{v.title}</h3>
+                    <p className="text-zinc-400">{v.description}</p>
+                 </BentoBox>
+              ))}
+           </BentoGrid>
         </div>
 
-        <section className="mb-24">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12 text-center font-display text-3xl font-bold"
-          >
-            Our Values
-          </motion.h2>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {values.map((value, i) => (
-              <motion.div
-                key={value.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <ValueCard {...value} />
-              </motion.div>
-            ))}
-          </div>
-        </section>
+        {/* Team Array */}
+        <div>
+           <h2 className="font-display text-4xl font-bold mb-12 text-center">Meet the Artisans</h2>
+           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {team.map((t, i) => (
+                 <motion.div 
+                   key={i}
+                   whileHover={{ y: -10 }}
+                   className="group relative h-[400px] rounded-[2rem] overflow-hidden border border-white/10 bg-[#131316]/50"
+                 >
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-[#050507]/20 to-transparent z-10" />
+                    {/* Placeholder image representation */}
+                    <div className="absolute inset-0 bg-zinc-800 animate-pulse" />
+                    <div className="absolute inset-0 flex items-center justify-center z-0">
+                       <span className="text-6xl font-display font-bold text-zinc-700">{t.img}</span>
+                    </div>
 
-        <section className="mb-24">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12 text-center font-display text-3xl font-bold"
-          >
-            Meet Our Team
-          </motion.h2>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {team.map((member, i) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <TeamMemberCard {...member} />
-              </motion.div>
-            ))}
-          </div>
-        </section>
+                    <div className="absolute bottom-0 left-0 right-0 p-8 z-20">
+                       <h3 className="font-display text-2xl font-bold text-white group-hover:text-violet-300 transition-colors">{t.name}</h3>
+                       <p className="text-fuchsia-400 font-medium uppercase tracking-wider text-xs mt-2">{t.role}</p>
+                    </div>
+                 </motion.div>
+              ))}
+           </div>
+        </div>
 
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="rounded-3xl border border-white/5 bg-gradient-to-br from-violet-600/10 to-fuchsia-600/10 p-12 text-center"
-        >
-          <div className="mx-auto max-w-2xl">
-            <h2 className="mb-4 font-display text-3xl font-bold">Visit Us Today</h2>
-            <p className="mb-8 text-zinc-400">
-              Experience the Qwik Salon difference for yourself. We can&apos;t wait to meet you.
-            </p>
-            <div className="flex flex-wrap justify-center gap-6 text-sm">
-              <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-violet-400" />
-                <span>123 High Street, London EC1A 1BB</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-violet-400" />
-                <span>+44 20 1234 5678</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-violet-400" />
-                <span>hello@qwiksalon.co.uk</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-violet-400" />
-                <span>Mon-Sat: 9am - 7pm</span>
-              </div>
-            </div>
-          </div>
-        </motion.section>
       </div>
     </div>
   );

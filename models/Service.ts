@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Model, Types } from 'mongoose';
-import { ServiceCategory } from '@/types';
+import type { ServiceCategory } from '@/types';
 
 export interface IService extends Document {
   name: string;

@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Calendar, Clock, DollarSign, Star, ArrowRight, Sparkles, Plus, History } from 'lucide-react';
-import { Card, Button, Badge } from '@/components/ui';
+import { Button, Badge, BentoGrid, BentoBox } from '@/components/ui';
 
 const upcomingBookings = [
   { id: '1', service: 'Precision Cut & Style', stylist: 'Alexandra C.', date: 'Tomorrow', time: '2:00 PM', price: 55 },
@@ -22,54 +22,19 @@ const services = [
   { id: 'treatment', name: 'Treatments', price: 'From £45', icon: Sparkles },
 ];
 
-function BentoCard({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay }}
-      className={`relative overflow-hidden rounded-2xl border border-white/5 bg-[#131316] ${className}`}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-600/5 to-fuchsia-600/5 opacity-0 transition-opacity hover:opacity-100" />
-      <div className="relative h-full">{children}</div>
-    </motion.div>
-  );
-}
-
-function StatCard({ icon: Icon, label, value, trend, delay = 0 }: { icon: any; label: string; value: string; trend?: string; delay?: number }) {
-  return (
-    <BentoCard delay={delay} className="p-6">
-      <div className="flex items-start justify-between">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5">
-          <Icon className="h-6 w-6 text-violet-400" />
-        </div>
-        {trend && (
-          <Badge variant="outline" className="text-xs text-emerald-400 border-emerald-400/30">
-            {trend}
-          </Badge>
-        )}
-      </div>
-      <div className="mt-4">
-        <p className="font-display text-3xl font-bold">{value}</p>
-        <p className="text-sm text-zinc-500">{label}</p>
-      </div>
-    </BentoCard>
-  );
-}
-
 export default function CustomerDashboardPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-12">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between"
+        className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
       >
         <div>
-          <h1 className="font-display text-3xl font-bold">Welcome Back</h1>
-          <p className="text-zinc-400">Manage your appointments and discover new services</p>
+          <h1 className="font-display text-4xl font-bold tracking-tight">Welcome Back</h1>
+          <p className="mt-1 text-zinc-400">Manage your appointments and discover new services</p>
         </div>
-        <Button asChild className="gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-600">
+        <Button asChild className="gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 shadow-lg shadow-violet-500/25 transition-all hover:scale-105">
           <Link href="/services">
             <Plus className="h-4 w-4" />
             Book New
@@ -77,99 +42,138 @@ export default function CustomerDashboardPage() {
         </Button>
       </motion.div>
 
-      <div className="grid gap-4 md:grid-cols-4">
-        <StatCard icon={Calendar} label="Upcoming" value="2" delay={0.1} />
-        <StatCard icon={DollarSign} label="Total Spent" value="£245" delay={0.2} />
-        <StatCard icon={Star} label="Visits" value="8" trend="+2 this month" delay={0.3} />
-        <StatCard icon={Clock} label="Member Since" value="Jan '26" delay={0.4} />
-      </div>
+      <BentoGrid columns={4}>
+        {/* Top Stat Cards */}
+        <BentoBox colSpan={1} className="flex flex-col justify-between">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-500/10 text-violet-400">
+            <Calendar className="h-6 w-6" />
+          </div>
+          <div className="mt-6">
+            <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Upcoming</h3>
+            <p className="mt-2 font-display text-4xl font-bold">2</p>
+          </div>
+        </BentoBox>
+        <BentoBox colSpan={1} className="flex flex-col justify-between">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400">
+            <DollarSign className="h-6 w-6" />
+          </div>
+          <div className="mt-6">
+            <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Total Spent</h3>
+            <p className="mt-2 font-display text-4xl font-bold">£245</p>
+          </div>
+        </BentoBox>
+        <BentoBox colSpan={1} className="flex flex-col justify-between">
+          <div className="flex items-start justify-between">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-400">
+              <Star className="h-6 w-6" />
+            </div>
+            <Badge variant="outline" className="border-amber-400/30 text-amber-400 bg-amber-400/10 text-xs">
+              +2 this month
+            </Badge>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Visits</h3>
+            <p className="mt-2 font-display text-4xl font-bold">8</p>
+          </div>
+        </BentoBox>
+        <BentoBox colSpan={1} className="flex flex-col justify-between">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-fuchsia-500/10 text-fuchsia-400">
+            <Clock className="h-6 w-6" />
+          </div>
+          <div className="mt-6">
+            <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Member Since</h3>
+            <p className="mt-2 font-display text-2xl font-bold">Jan &apos;26</p>
+          </div>
+        </BentoBox>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <BentoCard delay={0.2} className="lg:col-span-2 p-6">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-display text-lg font-semibold">Upcoming Appointments</h2>
-            <Link href="/customer/bookings" className="text-sm text-violet-400 hover:text-violet-300">
-              View all
+        {/* Upcoming Appointments (Spans 2 columns, 2 rows) */}
+        <BentoBox colSpan={2} rowSpan={2} className="flex flex-col">
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="font-display text-xl font-semibold">Upcoming Appointments</h2>
+            <Link href="/customer/bookings" className="text-sm font-medium text-violet-400 hover:text-violet-300">
+              View All
             </Link>
           </div>
-          <div className="space-y-4">
-            {upcomingBookings.map((booking) => (
+          <div className="flex flex-1 flex-col gap-4">
+            {upcomingBookings.map((booking, idx) => (
               <div
                 key={booking.id}
-                className="flex items-center justify-between rounded-xl border border-white/5 bg-white/5 p-4"
+                className="group relative overflow-hidden rounded-2xl border border-violet-500/20 bg-violet-500/5 p-5 transition-all hover:bg-violet-500/10"
               >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5">
-                    <Calendar className="h-6 w-6 text-violet-400" />
+                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 opacity-60" />
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-4">
+                    <div className="flex flex-col items-center justify-center rounded-xl bg-black/40 px-3 py-2 text-center border border-white/5">
+                      <span className="text-xs font-semibold text-zinc-400 uppercase">{booking.date === 'Tomorrow' ? 'TMR' : booking.date.split(' ')[0]}</span>
+                      <span className="font-display text-lg font-bold text-violet-300">{booking.date === 'Tomorrow' ? 'W' : booking.date.split(' ')[1]}</span>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-zinc-100">{booking.service}</p>
+                      <p className="text-sm text-zinc-400">with {booking.stylist}</p>
+                      <div className="mt-1 flex items-center gap-2 text-xs font-medium text-zinc-500">
+                        <Clock className="h-3 w-3" /> {booking.time}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium">{booking.service}</p>
-                    <p className="text-sm text-zinc-500">{booking.stylist}</p>
+                  <div className="text-right">
+                    <p className="font-bold text-violet-400">£{booking.price}</p>
+                    <Button variant="ghost" size="sm" className="mt-2 h-8 px-2 text-xs">
+                      Reschedule
+                    </Button>
                   </div>
-                </div>
-                <div className="text-right">
-                  <p className="font-medium">{booking.date}</p>
-                  <p className="text-sm text-zinc-500">{booking.time}</p>
                 </div>
               </div>
             ))}
-            {upcomingBookings.length === 0 && (
-              <div className="py-8 text-center">
-                <p className="text-zinc-500">No upcoming appointments</p>
-              </div>
-            )}
           </div>
-        </BentoCard>
+        </BentoBox>
 
-        <BentoCard delay={0.3} className="p-6">
-          <h2 className="mb-4 font-display text-lg font-semibold">Quick Book</h2>
-          <div className="space-y-3">
+        {/* Quick Book (Spans 2 columns) */}
+        <BentoBox colSpan={2} className="flex flex-col">
+          <div className="mb-5 flex items-center justify-between">
+             <h2 className="font-display text-xl font-semibold">Quick Book</h2>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
             {services.map((service) => (
               <Link key={service.id} href={`/services?category=${service.id}`}>
-                <motion.div
-                  whileHover={{ x: 4 }}
-                  className="flex items-center justify-between rounded-xl border border-white/5 bg-white/5 p-3 transition-colors hover:border-violet-500/30"
-                >
-                  <div className="flex items-center gap-3">
-                    <service.icon className="h-5 w-5 text-violet-400" />
-                    <span className="text-sm">{service.name}</span>
+                <div className="group flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4 transition-all hover:border-violet-500/40 hover:bg-violet-500/10">
+                  <div className="flex items-start justify-between">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-500/20 text-violet-400 transition-transform group-hover:scale-110">
+                      <service.icon className="h-5 w-5" />
+                    </div>
+                    <ArrowRight className="h-5 w-5 text-zinc-600 transition-colors group-hover:text-violet-400" />
                   </div>
-                  <ArrowRight className="h-4 w-4 text-zinc-500" />
-                </motion.div>
+                  <div className="mt-4">
+                    <p className="font-medium text-zinc-200">{service.name}</p>
+                    <p className="text-xs text-zinc-500">{service.price}</p>
+                  </div>
+                </div>
               </Link>
             ))}
           </div>
-        </BentoCard>
-      </div>
+        </BentoBox>
 
-      <BentoCard delay={0.4} className="p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-lg font-semibold">Recent Services</h2>
-          <Link href="/customer/bookings" className="text-sm text-violet-400 hover:text-violet-300">
-            View history
-          </Link>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-white/5">
-                <th className="pb-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">Service</th>
-                <th className="pb-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">Date</th>
-                <th className="pb-3 text-right text-xs font-medium uppercase tracking-wider text-zinc-500">Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pastServices.map((service) => (
-                <tr key={service.id} className="border-b border-white/5 last:border-0">
-                  <td className="py-4">{service.service}</td>
-                  <td className="py-4 text-zinc-400">{service.date}</td>
-                  <td className="py-4 text-right font-medium">£{service.price}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </BentoCard>
+        {/* History (Spans 2 columns) */}
+        <BentoBox colSpan={2} className="flex flex-col">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="font-display text-lg font-semibold flex items-center gap-2">
+              <History className="h-5 w-5 text-zinc-500" /> Recent Services
+            </h2>
+          </div>
+          <div className="overflow-hidden rounded-xl border border-white/5 bg-black/20">
+            <table className="w-full text-sm">
+              <tbody className="divide-y divide-white/5">
+                {pastServices.map((service) => (
+                  <tr key={service.id} className="transition-colors hover:bg-white/5 hover:cursor-pointer">
+                    <td className="p-4 font-medium text-zinc-300">{service.service}</td>
+                    <td className="p-4 text-zinc-500">{service.date}</td>
+                    <td className="p-4 text-right font-medium text-zinc-400">£{service.price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </BentoBox>
+      </BentoGrid>
     </div>
   );
 }

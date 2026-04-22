@@ -1,6 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { UserRole } from "@/types";
 
 // Define protected route patterns
 const isPublicRoute = createRouteMatcher([
@@ -46,16 +45,16 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.redirect(new URL("/onboarding", req.url));
   }
 
-  // Role-based route protection
-  if (isAdminRoute(req) && role !== UserRole.ADMIN) {
+  // Role-based route protection (compare against Clerk metadata strings)
+  if (isAdminRoute(req) && role !== "admin") {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (isStylistRoute(req) && role !== UserRole.STYLIST && role !== UserRole.ADMIN) {
+  if (isStylistRoute(req) && role !== "stylist" && role !== "admin") {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (isCustomerRoute(req) && role !== UserRole.CUSTOMER && role !== UserRole.ADMIN) {
+  if (isCustomerRoute(req) && role !== "customer" && role !== "admin") {
     return NextResponse.redirect(new URL("/", req.url));
   }
 

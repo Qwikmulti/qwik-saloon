@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Scissors, Sparkles, Mail, MapPin, Phone, Clock, Instagram, Facebook, Twitter } from 'lucide-react';

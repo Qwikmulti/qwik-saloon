@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @theme inline {
   --color-primary: #7c3aed;
@@ -12,9 +11,9 @@
   --color-muted-foreground: #a1a1aa;
   --color-destructive: #ef4444;
   --color-destructive-foreground: #ffffff;
-  --color-background: #0a0a0b;
+  --color-background: #050507;
   --color-foreground: #fafafa;
-  --color-card: #131316;
+  --color-card: #0d0d12;
   --color-card-foreground: #fafafa;
   --color-ring: #7c3aed;
   --color-border: #27272a;
@@ -50,13 +49,14 @@
 }
 
 :root {
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-  --gradient-gold: linear-gradient(135deg, #d4af37 0%, #f5d742 100%);
-  --gradient-emerald: linear-gradient(135deg, #10b981 0%, #34d399 100%);
-  --gradient-rose: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%);
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --gradient-primary: linear-gradient(135deg, #6d28d9 0%, #9333ea 100%);
+  --gradient-gold: linear-gradient(135deg, #d4af37 0%, #fcd34d 100%);
+  --gradient-emerald: linear-gradient(135deg, #059669 0%, #34d399 100%);
+  --gradient-rose: linear-gradient(135deg, #e11d48 0%, #fb7185 100%);
+  --gradient-luxe: linear-gradient(135deg, #050507 0%, #171124 100%);
 }
 
 @keyframes fade-in {

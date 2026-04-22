@@ -1,167 +1,178 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Calendar, Clock, DollarSign, TrendingUp, Users, Star, ArrowUpRight, ArrowDownRight, Settings } from 'lucide-react';
-import { Card, Badge, Button } from '@/components/ui';
+import { Calendar, Clock, DollarSign, TrendingUp, Users, Star, ArrowUpRight, ArrowDownRight, Settings, CheckCircle2 } from 'lucide-react';
+import { Badge, Button, BentoGrid, BentoBox } from '@/components/ui';
 
 const todaySchedule = [
-  { id: '1', time: '09:00', service: 'Precision Cut', client: 'Sarah M.', status: 'completed' },
-  { id: '2', time: '10:30', service: 'Full Colour', client: 'Emma L.', status: 'confirmed' },
-  { id: '3', time: '13:00', service: 'Highlights', client: 'James T.', status: 'confirmed' },
-  { id: '4', time: '15:30', service: 'Treatment', client: 'Michael B.', status: 'pending' },
+  { id: '1', time: '09:00 AM', service: 'Precision Cut', client: 'Sarah M.', status: 'completed' },
+  { id: '2', time: '10:30 AM', service: 'Full Colour', client: 'Emma L.', status: 'confirmed' },
+  { id: '3', time: '01:00 PM', service: 'Highlights', client: 'James T.', status: 'confirmed' },
+  { id: '4', time: '03:30 PM', service: 'Treatment', client: 'Michael B.', status: 'pending' },
 ];
 
 const weekStats = [
-  { label: 'This Week', value: '12', change: '+3', trend: 'up' },
-  { label: 'Revenue', value: '£485', change: '+12%', trend: 'up' },
-  { label: 'Rating', value: '4.9', change: '+0.1', trend: 'up' },
-  { label: 'Hours', value: '32', change: '-2', trend: 'down' },
+  { label: 'This Week', value: '12', change: '+3', trend: 'up', icon: Calendar, color: 'text-violet-400', bg: 'bg-violet-500/10' },
+  { label: 'Revenue', value: '£485', change: '+12%', trend: 'up', icon: DollarSign, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+  { label: 'Rating', value: '4.9', change: '+0.1', trend: 'up', icon: Star, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+  { label: 'Hours', value: '32', change: '-2', trend: 'down', icon: Clock, color: 'text-rose-400', bg: 'bg-rose-500/10' },
 ];
-
-function BentoCard({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay }}
-      className={`relative overflow-hidden rounded-2xl border border-white/5 bg-[#131316] ${className}`}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-600/5 to-fuchsia-600/5 opacity-0 transition-opacity hover:opacity-100" />
-      <div className="relative h-full">{children}</div>
-    </motion.div>
-  );
-}
 
 export default function StylistDashboardPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-12">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between"
+        className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
       >
         <div>
-          <h1 className="font-display text-3xl font-bold">Stylist Dashboard</h1>
-          <p className="text-zinc-400">Manage your appointments and availability</p>
+          <h1 className="font-display text-4xl font-bold tracking-tight">Stylist Dashboard</h1>
+          <p className="mt-1 text-zinc-400">Manage your schedule, clients, and earnings.</p>
         </div>
-        <Button variant="outline" className="gap-2 border-white/10">
+        <Button variant="outline" className="gap-2 border-white/10 bg-white/5 backdrop-blur-xl">
           <Settings className="h-4 w-4" />
           Settings
         </Button>
       </motion.div>
 
-      <div className="grid gap-4 md:grid-cols-4">
+      <BentoGrid columns={4}>
+        {/* Top Gen Stats */}
         {weekStats.map((stat, i) => (
-          <BentoCard key={stat.label} delay={i * 0.1} className="p-6">
+          <BentoBox key={stat.label} colSpan={1} className="flex flex-col justify-between">
             <div className="flex items-start justify-between">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5">
-                {stat.label === 'This Week' ? <Calendar className="h-5 w-5 text-violet-400" /> :
-                 stat.label === 'Revenue' ? <DollarSign className="h-5 w-5 text-emerald-400" /> :
-                 stat.label === 'Rating' ? <Star className="h-5 w-5 text-amber-400" /> :
-                 <Clock className="h-5 w-5 text-violet-400" />}
+              <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${stat.bg}`}>
+                <stat.icon className={`h-6 w-6 ${stat.color}`} />
               </div>
-              <Badge variant={stat.trend === 'up' ? 'default' : 'destructive'} className="text-xs">
+              <Badge 
+                variant="outline" 
+                className={stat.trend === 'up' ? "border-emerald-500/30 text-emerald-400 bg-emerald-500/10" : "border-rose-500/30 text-rose-400 bg-rose-500/10"}
+              >
                 {stat.trend === 'up' ? <ArrowUpRight className="mr-1 h-3 w-3" /> : <ArrowDownRight className="mr-1 h-3 w-3" />}
                 {stat.change}
               </Badge>
             </div>
-            <div className="mt-4">
-              <p className="font-display text-3xl font-bold">{stat.value}</p>
-              <p className="text-sm text-zinc-500">{stat.label}</p>
+            <div className="mt-6">
+              <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider">{stat.label}</h3>
+              <p className="mt-2 font-display text-4xl font-bold">{stat.value}</p>
             </div>
-          </BentoCard>
+          </BentoBox>
         ))}
-      </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <BentoCard delay={0.4} className="lg:col-span-2 p-6">
+        {/* Today's Schedule (Spans 2 columns, 2 rows) */}
+        <BentoBox colSpan={2} rowSpan={2} className="flex flex-col">
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="font-display text-lg font-semibold">Today&apos;s Schedule</h2>
-            <Badge variant="outline" className="text-xs">
-              {todaySchedule.filter(s => s.status === 'confirmed' || s.status === 'pending').length} appointments
+            <div>
+              <h2 className="font-display text-xl font-semibold">Today&apos;s Schedule</h2>
+              <p className="text-sm text-zinc-400">Your appointments for today</p>
+            </div>
+            <Badge variant="outline" className="border-violet-500/30 bg-violet-500/10 text-violet-400 gap-1 px-3 py-1">
+              {todaySchedule.filter(s => s.status !== 'completed').length} Left
             </Badge>
           </div>
           
-          <div className="space-y-3">
+          <div className="flex flex-1 flex-col justify-between gap-4 overflow-y-auto pr-2">
             {todaySchedule.map((appointment) => (
               <div
                 key={appointment.id}
-                className="flex items-center justify-between rounded-xl border border-white/5 bg-white/5 p-4"
+                className={`group relative flex items-center justify-between rounded-2xl border p-4 transition-all ${
+                  appointment.status === 'completed'
+                    ? 'border-white/5 bg-black/40 opacity-75'
+                    : 'border-white/10 bg-white/5 hover:border-violet-500/30 hover:bg-violet-500/5'
+                }`}
               >
+                {/* Timeline Connector Line */}
+                <div className="absolute -left-[1px] top-1/2 h-1/2 w-[3px] -translate-y-1/2 rounded-full bg-violet-500 opacity-0 transition-opacity group-hover:opacity-100" />
+                
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5">
-                    <Clock className="h-5 w-5 text-violet-400" />
+                  <div className="min-w-[70px] text-center">
+                    <span className="font-display text-lg font-bold text-zinc-200">
+                      {appointment.time.split(' ')[0]}
+                    </span>
+                    <span className="ml-1 text-xs font-semibold uppercase text-zinc-500">
+                      {appointment.time.split(' ')[1]}
+                    </span>
                   </div>
+                  <div className="h-10 w-px bg-white/10" />
                   <div>
-                    <p className="font-medium">{appointment.service}</p>
-                    <p className="text-sm text-zinc-500">{appointment.client}</p>
+                    <p className={`font-medium ${appointment.status === 'completed' ? 'text-zinc-500 line-through decoration-zinc-600' : 'text-zinc-100'}`}>
+                      {appointment.service}
+                    </p>
+                    <p className="text-sm text-zinc-400">{appointment.client}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="font-mono text-sm">{appointment.time}</span>
-                  <Badge 
-                    variant={appointment.status === 'completed' ? 'default' : 
-                           appointment.status === 'confirmed' ? 'secondary' : 'outline'}
-                    className="capitalize"
-                  >
-                    {appointment.status}
-                  </Badge>
+                <div className="flex items-center gap-3">
+                  {appointment.status === 'completed' ? (
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
+                      <CheckCircle2 className="h-5 w-5" />
+                    </div>
+                  ) : (
+                    <Badge 
+                      variant="outline"
+                      className={`uppercase tracking-wider text-[10px] font-bold ${
+                        appointment.status === 'confirmed' ? 'border-violet-500/30 text-violet-400 bg-violet-500/10' : 'border-amber-500/30 text-amber-400 bg-amber-500/10'
+                      }`}
+                    >
+                      {appointment.status}
+                    </Badge>
+                  )}
                 </div>
               </div>
             ))}
           </div>
-        </BentoCard>
+        </BentoBox>
 
-        <BentoCard delay={0.5} className="p-6">
-          <h2 className="mb-6 font-display text-lg font-semibold">Quick Actions</h2>
-          <div className="space-y-3">
-            <Button variant="outline" className="w-full justify-start gap-3 border-white/10">
-              <Calendar className="h-4 w-4" />
-              Set Availability
+        {/* Quick Actions (Spans 2 columns) */}
+        <BentoBox colSpan={2} className="flex flex-col justify-center">
+          <h2 className="mb-5 font-display text-lg font-semibold">Quick Actions</h2>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
+            <Button variant="outline" className="h-auto flex-col items-start gap-2 border-white/10 bg-white/5 p-4 hover:border-violet-500/30 hover:bg-violet-500/10">
+              <Calendar className="h-5 w-5 text-violet-400" />
+              <span className="font-medium text-zinc-200">Set Availability</span>
             </Button>
-            <Button variant="outline" className="w-full justify-start gap-3 border-white/10">
-              <Settings className="h-4 w-4" />
-              Edit Profile
+            <Button variant="outline" className="h-auto flex-col items-start gap-2 border-white/10 bg-white/5 p-4 hover:border-fuchsia-500/30 hover:bg-fuchsia-500/10">
+              <TrendingUp className="h-5 w-5 text-fuchsia-400" />
+              <span className="font-medium text-zinc-200">View Analytics</span>
             </Button>
-            <Button variant="outline" className="w-full justify-start gap-3 border-white/10">
-              <TrendingUp className="h-4 w-4" />
-              View Analytics
+            <Button variant="outline" className="h-auto flex-col items-start gap-2 border-white/10 bg-white/5 p-4 md:col-span-2 hover:border-emerald-500/30 hover:bg-emerald-500/10 mt-2">
+               <Settings className="h-5 w-5 text-emerald-400" />
+               <span className="font-medium text-zinc-200">Edit Profile & Services</span>
             </Button>
           </div>
-        </BentoCard>
-      </div>
+        </BentoBox>
 
-      <BentoCard delay={0.6} className="p-6">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="font-display text-lg font-semibold">This Week</h2>
-          <Button variant="ghost" size="sm" className="text-violet-400">
-            View Calendar
-          </Button>
-        </div>
-        
-        <div className="grid gap-4 md:grid-cols-7">
-          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => {
-            const hasAppointments = i < 5;
-            const count = hasAppointments ? Math.floor(Math.random() * 4) + 1 : 0;
-            return (
-              <div
-                key={day}
-                className={`rounded-xl border p-4 text-center ${
-                  hasAppointments 
-                    ? 'border-violet-500/30 bg-violet-600/10' 
-                    : 'border-white/5 bg-white/5'
-                }`}
-              >
-                <p className="text-xs text-zinc-500">{day}</p>
-                <p className={`font-display text-2xl font-bold ${hasAppointments ? 'text-violet-400' : 'text-zinc-600'}`}>
-                  {count}
-                </p>
-                <p className="text-xs text-zinc-500">appointments</p>
-              </div>
-            );
-          })}
-        </div>
-      </BentoCard>
+        {/* This Week Calendar view (Spans 2 columns) */}
+        <BentoBox colSpan={2} className="flex flex-col justify-between">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="font-display text-lg font-semibold border-b border-white/5 pb-2">Week Outlook</h2>
+          </div>
+          <div className="grid grid-cols-7 gap-2">
+            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => {
+              const hasAppointments = i < 5;
+              const count = hasAppointments ? Math.floor(Math.random() * 4) + 1 : 0;
+              const isToday = day === 'Tue'; // mock today
+              
+              return (
+                <div
+                  key={day}
+                  className={`flex flex-col items-center justify-center rounded-xl py-3 transition-all ${
+                    isToday
+                      ? 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white shadow-lg shadow-violet-500/25 scale-105 border border-violet-400/50'
+                      : hasAppointments 
+                        ? 'border border-violet-500/10 bg-violet-500/5 hover:bg-violet-500/10 cursor-pointer' 
+                        : 'border border-white/5 bg-black/20 opacity-50'
+                  }`}
+                >
+                  <span className={`text-[10px] font-bold uppercase tracking-wider ${isToday ? 'text-white/80' : 'text-zinc-500'}`}>{day}</span>
+                  <span className={`mt-1 font-display text-xl font-bold ${isToday ? 'text-white' : hasAppointments ? 'text-violet-400' : 'text-zinc-600'}`}>
+                    {count}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </BentoBox>
+      </BentoGrid>
     </div>
   );
 }

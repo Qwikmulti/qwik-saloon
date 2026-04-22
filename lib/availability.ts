@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { connectDB } from '@/lib/mongodb/connection';
 import { Booking, Stylist, Service, User, AvailabilityTemplate, AvailabilityException } from '@/models';
 import { timeToMinutes, minutesToTime, calculateEndTime, doTimesOverlap } from '@/lib/utils';
-import { TimeSlot, BookingStatus } from '@/types';
+import type { TimeSlot, BookingStatus } from '@/types';
 import mongoose from 'mongoose';
 
 const BUSINESS_START = 9 * 60;

@@ -22,12 +22,3 @@ export type {
   ServiceInfo,
   ScheduleSlot,
 } from './User';
-
-export type { IUser } from './User';
-export type { IService } from './Service';
-export type { IStylist, ServiceOffering } from './Stylist';
-export type { IAvailabilityTemplate, ScheduleSlot } from './AvailabilityTemplate';
-export type { IAvailabilityException } from './AvailabilityException';
-export type { IBooking, CustomerInfo, StylistInfo, ServiceInfo } from './Booking';
-export type { IReview } from './Review';
-export type { ISetting } from './Setting';

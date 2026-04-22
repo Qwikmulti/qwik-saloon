@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
-import { BookingStatus } from '@/types';
+import type { BookingStatus } from '@/types';
 
 export interface CustomerInfo {
   name: string;
