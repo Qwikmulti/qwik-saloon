@@ -1,36 +1,153 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Qwik Salon - Premium Unisex Salon Booking Platform
+
+A modern full-stack salon booking system built with Next.js 16+, MongoDB, and Clerk authentication.
+
+## Features
+
+### Customer Features
+- Browse services with categories
+- View stylist profiles
+- 4-step booking wizard
+- View/manage bookings
+- Cancel appointments
+
+### Stylist Features
+- Dashboard with earnings
+- Weekly schedule view
+- Appointment management
+- Availability templates
+- Exception dates (holidays)
+- Profile customization
+
+### Admin Features
+- Analytics dashboard
+- Booking oversight
+- Service management (CRUD)
+- Stylist management
+
+## Tech Stack
+
+- **Framework**: Next.js 16+ (App Router)
+- **Database**: MongoDB with Mongoose
+- **Auth**: Clerk Authentication
+- **Styling**: Tailwind CSS v4
+- **Animations**: Framer Motion
+- **Forms**: React Hook Form + Zod
+- **State**: Zustand
+- **TypeScript**: Strict mode
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- MongoDB Atlas account
+- Clerk account
+
+### Environment Variables
+
+Create a `.env` file with:
+
+```env
+# MongoDB
+MONGODB_URI=mongodb+srv://your-cluster-url
+
+# Clerk
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxx
+CLERK_SECRET_KEY=sk_test_xxx
+CLERK_WEBHOOK_SECRET=whsec_xxx
+
+# Uploadthing
+UPLOADTHING_TOKEN=your-token
+```
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Seed Data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npx ts-node lib/seed.ts
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+├── app/                    # Next.js App Router
+│   ├── (auth)/            # Authentication pages
+│   ├── (public)/           # Public pages
+│   ├── (dashboard)/        # Dashboard pages
+│   ├── booking/            # Booking wizard
+│   └── api/                # API routes
+├── components/             # React components
+│   ├── ui/                # Base UI components
+│   └── shared/             # Shared components
+├── lib/                   # Utilities
+├── models/                 # Mongoose models
+├── actions/               # Server actions
+└── store/                 # Zustand stores
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Database Collections
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `users` - User profiles
+- `stylists` - Stylist data
+- `services` - Service offerings
+- `bookings` - Appointments
+- `availability_templates` - Weekly schedules
+- `availability_exceptions` - Date overrides
+- `reviews` - Client reviews
+- `settings` - App configuration
 
-## Deploy on Vercel
+## API Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Public
+- `GET /api/services` - List services
+- `GET /api/stylists` - List stylists
+- `GET /api/availability` - Get time slots
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Booking
+- `POST /api/bookings` - Create booking
+- `POST /api/bookings/[id]/cancel` - Cancel booking
+
+### Stylist
+- `GET /api/stylist/bookings` - Get stylist bookings
+- `PATCH /api/stylist/bookings/[id]/status` - Update status
+- `GET/POST /api/stylist/availability` - Manage availability
+- `GET/PATCH /api/stylist/profile` - Manage profile
+
+### Admin
+- `GET /api/admin/analytics` - Dashboard stats
+- `GET /api/admin/bookings` - All bookings
+- `GET/POST /api/admin/services` - Manage services
+- `GET /api/admin/stylists` - Manage stylists
+
+## Design
+
+- Dark mode default with violet/fuchsia accents
+- Glassmorphism effects
+- Smooth animations with Framer Motion
+- Bento grid layouts
+- 2026 design trends
+
+## Business Rules
+
+- Booking window: 1-60 days in advance
+- Cancellation: 24 hours before
+- Business hours: 9 AM - 7 PM
+- Slot intervals: 30 minutes
+
+## License
+
+MIT
