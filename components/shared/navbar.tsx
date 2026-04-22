@@ -62,15 +62,6 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-3">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition-colors hover:bg-white/10"
-            >
-              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </motion.button>
-
             <SignedIn>
               <UserButton />
             </SignedIn>

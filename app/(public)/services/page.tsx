@@ -1,138 +1,108 @@
-import Link from 'next/link';
-import { connectDB } from '@/lib/mongodb/connection';
-import { Service } from '@/models';
-import { Button, BentoGrid, BentoBox } from '@/components/ui';
-import { ArrowRight, Clock, DollarSign, Sparkles, Scissors, Heart, Crown } from 'lucide-react';
-import { formatCurrency } from '@/lib/utils';
-import { SERVICE_CATEGORIES } from '@/lib/constants';
+import type { Metadata } from "next";
+import { connectDB } from "@/lib/mongodb/connection";
+import { Service } from "@/models";
+import { ServicesHero } from "@/components/services/services-hero";
+import {
+  ServicesGrid,
+  type SerializedService,
+} from "@/components/services/services-grid";
 
-const categoryIcons: Record<string, any> = {
-  haircut: Scissors,
-  coloring: Sparkles,
-  treatment: Heart,
-  styling: Crown,
-  other: Sparkles,
+export const metadata: Metadata = {
+  title: "Services & Treatments | Qwik Saloon London",
+  description:
+    "Browse our full menu of premium hair services — precision cuts, balayage, colour, keratin treatments, bridal styling and more. Transparent pricing, no hidden fees. Book online instantly.",
+  keywords: [
+    "salon services London",
+    "hair treatment menu",
+    "balayage price London",
+    "precision haircut booking",
+    "keratin treatment",
+    "bridal hair styling London",
+    "salon price list",
+    "qwik saloon services",
+  ],
+  openGraph: {
+    title: "Services & Pricing — Qwik Saloon London",
+    description:
+      "Explore Qwik Saloon's curated treatments with transparent pricing and instant online booking. Precision cuts, luminous colour, molecular repair and more.",
+    url: "https://qwiksaloon.co.uk/services",
+    siteName: "Qwik Saloon",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1200&auto=format&fit=crop",
+        width: 1200,
+        height: 630,
+        alt: "Qwik Saloon Hair Services",
+      },
+    ],
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Services & Pricing — Qwik Saloon",
+    description:
+      "Premium hair services with transparent pricing. Precision cuts from £45, colour from £85, treatments from £60. Book online.",
+    images: [
+      "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1200&auto=format&fit=crop",
+    ],
+  },
+  alternates: {
+    canonical: "https://qwiksaloon.co.uk/services",
+  },
 };
 
+/* ─────────────────────────────────────────────────────────
+   Server Component — fetches from MongoDB, serialises,
+   and passes clean data to client components.
+   Wrapped in try-catch so a DB outage doesn't crash the page.
+───────────────────────────────────────────────────────── */
 export default async function ServicesPage({
   searchParams,
 }: {
   searchParams: Promise<{ category?: string }>;
 }) {
   const params = await searchParams;
-  await connectDB();
 
-  const filter: Record<string, any> = { isActive: true };
-  if (params.category) filter.category = params.category;
+  let services: SerializedService[] = [];
 
-  const services = await Service.find(filter).sort({ category: 1, name: 1 });
-  const groupedServices = services.reduce((acc: Record<string, any[]>, service) => {
-    const category = service.category;
-    if (!acc[category]) acc[category] = [];
-    acc[category].push(service);
-    return acc;
-  }, {} as Record<string, any[]>);
+  try {
+    await connectDB();
+
+    // Build query filter
+    const filter: Record<string, unknown> = { isActive: true };
+    if (params.category) filter.category = params.category;
+
+    // Fetch from DB — .lean() returns plain JS objects (no Mongoose overhead)
+    const rawServices = await Service.find(filter)
+      .sort({ category: 1, name: 1 })
+      .lean();
+
+    // Serialize to plain JSON-safe objects for the client boundary
+    services = rawServices.map((doc) => ({
+      _id: String(doc._id),
+      name: doc.name,
+      description: doc.description,
+      category: doc.category,
+      durationMinutes: doc.durationMinutes,
+      basePrice: doc.basePrice,
+      imageUrl: doc.imageUrl,
+    }));
+  } catch (error) {
+    // Log on server, render graceful fallback on client
+    console.error("[ServicesPage] Failed to fetch services:", error);
+  }
 
   return (
-    <div className="min-h-screen py-32 bg-[#050507]">
-      <div className="container mx-auto px-6 max-w-7xl">
-        <div className="mb-20 text-center max-w-3xl mx-auto">
-          <span className="mb-6 inline-block text-sm font-semibold uppercase tracking-[0.2em] text-violet-400">
-            Our Menu
-          </span>
-          <h1 className="font-display text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-            Curated <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">Treatments</span>
-          </h1>
-          <p className="mt-8 text-xl leading-relaxed text-zinc-400">
-            Uncomplicated pricing. Transparent duration. Elite execution. Select your service category below to view our offerings.
-          </p>
-        </div>
+    <main className="min-h-screen bg-[#050507]">
+      {/* 1. Animated hero heading */}
+      <ServicesHero />
 
-        {/* Category Tabs (2026 style pills) */}
-        <div className="mb-16 flex flex-wrap justify-center gap-3">
-          <Link href="/services">
-            <Button variant={!params.category ? 'default' : 'outline'} className={`rounded-full px-6 py-6 text-sm font-semibold tracking-wider uppercase transition-all ${!params.category ? 'bg-white text-black hover:bg-zinc-200' : 'border-white/10 bg-white/5 hover:bg-white/10 text-zinc-300'}`}>
-              All Services
-            </Button>
-          </Link>
-          {SERVICE_CATEGORIES.map((cat) => {
-            const Icon = categoryIcons[cat.value] || Sparkles;
-            const isActive = params.category === cat.value;
-            return (
-               <Link key={cat.value} href={`/services?category=${cat.value}`}>
-                  <Button
-                     variant={isActive ? 'default' : 'outline'}
-                     className={`gap-3 rounded-full px-6 py-6 text-sm font-semibold tracking-wider uppercase transition-all ${isActive ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 border-none shadow-lg shadow-violet-500/25' : 'border-white/10 bg-white/5 hover:bg-white/10 text-zinc-300'}`}
-                  >
-                     <Icon className="h-4 w-4" />
-                     {cat.label}
-                  </Button>
-               </Link>
-            );
-          })}
-        </div>
-
-        {Object.entries(groupedServices).map(([category, categoryServices]) => {
-           const Icon = categoryIcons[category] || Sparkles;
-           const catLabel = SERVICE_CATEGORIES.find((c) => c.value === category)?.label || category;
-
-           return (
-             <div key={category} className="mb-24">
-               <div className="mb-10 flex items-center gap-4 border-b border-white/5 pb-4">
-                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 border border-white/10">
-                   <Icon className="h-6 w-6 text-violet-400" />
-                 </div>
-                 <h2 className="font-display text-3xl font-bold capitalize">{catLabel}</h2>
-               </div>
-
-               <BentoGrid columns={3}>
-                 {categoryServices.map((service, i) => (
-                   <BentoBox key={service._id} colSpan={1} className="flex flex-col group p-8">
-                      <div className="mb-6 flex items-start justify-between">
-                         <div className="flex flex-col">
-                            <span className="font-display text-3xl font-bold bg-gradient-to-r from-violet-300 to-fuchsia-300 bg-clip-text text-transparent">
-                               {formatCurrency(service.basePrice)}
-                            </span>
-                            <span className="text-xs uppercase tracking-widest text-zinc-500 mt-1">Starting Price</span>
-                         </div>
-                         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-semibold text-zinc-300 tracking-wider">
-                            <Clock className="h-3 w-3 text-emerald-400" />
-                            {service.durationMinutes}m
-                         </div>
-                      </div>
-                      
-                      <h3 className="mb-3 font-display text-2xl font-bold text-zinc-100">{service.name}</h3>
-                      {service.description && (
-                         <p className="mb-8 text-sm leading-relaxed text-zinc-400 min-h-[60px]">
-                            {service.description}
-                         </p>
-                      )}
-                      
-                      <div className="mt-auto pt-6 border-t border-white/5">
-                         <Link href={`/booking?service=${service._id}`}>
-                            <Button className="w-full gap-2 rounded-xl bg-white text-[#050507] hover:bg-zinc-200 transition-all font-semibold">
-                               Select Treatment <ArrowRight className="h-4 w-4" />
-                            </Button>
-                         </Link>
-                      </div>
-                   </BentoBox>
-                 ))}
-               </BentoGrid>
-             </div>
-           );
-        })}
-
-        {services.length === 0 && (
-          <div className="py-24 text-center border border-white/10 rounded-3xl bg-white/5 backdrop-blur-md max-w-2xl mx-auto">
-             <Sparkles className="mx-auto h-12 w-12 text-zinc-500 mb-6 opacity-50" />
-             <h3 className="font-display text-2xl font-bold mb-3">No Treatments Found</h3>
-             <p className="text-zinc-400 mb-8">We couldn't locate services in this specific category.</p>
-             <Button asChild className="rounded-full bg-violet-600">
-                <Link href="/services">Clear Filters</Link>
-             </Button>
-          </div>
-        )}
-      </div>
-    </div>
+      {/* 2. Interactive filtered service grid */}
+      <ServicesGrid
+        services={services}
+        activeCategory={params.category || null}
+      />
+    </main>
   );
 }
