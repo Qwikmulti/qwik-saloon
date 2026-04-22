@@ -58,7 +58,7 @@ export default function StylistDashboardPage() {
                 {stat.label === 'This Week' ? <Calendar className="h-5 w-5 text-violet-400" /> :
                  stat.label === 'Revenue' ? <DollarSign className="h-5 w-5 text-emerald-400" /> :
                  stat.label === 'Rating' ? <Star className="h-5 w-5 text-amber-400" /> :
-                 <Clock className="h-5 w-5 text-blue-400" />}
+                 <Clock className="h-5 w-5 text-violet-400" />}
               </div>
               <Badge variant={stat.trend === 'up' ? 'default' : 'destructive'} className="text-xs">
                 {stat.trend === 'up' ? <ArrowUpRight className="mr-1 h-3 w-3" /> : <ArrowDownRight className="mr-1 h-3 w-3" />}

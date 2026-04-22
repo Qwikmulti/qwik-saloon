@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { connectDB } from '@/lib/mongodb/connection';
 import { Stylist } from '@/models';
-import { Card, Badge, Avatar, AvatarImage, AvatarFallback } from '@/components/ui';
+import { Card, Badge, Avatar, AvatarImage, AvatarFallback, Button } from '@/components/ui';
 import { Star, MapPin, ArrowRight, Sparkles } from 'lucide-react';
 
 export default async function StylistsPage() {
